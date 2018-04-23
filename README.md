@@ -15,4 +15,7 @@ ng serve - Tab 2 **port localhost:4200**
 Used allow-control-allow-origin CORS CHROME Extension for fast results
 
 ![alt text](/images/img1.png)
+-----------------------------------------------------
 ![alt text](/images/img2.png)
+-----------------------------------------------------
+![alt text](/images/img3.png)
