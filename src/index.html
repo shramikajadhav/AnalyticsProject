@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <!-- Set the base href -->
+
+    <base href="/">
+    <title>Angular App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/app.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <style>
+      body {
+        font-family:"Helvetica Neue";
+        color: #686765;
+      }
+      .name {
+        float:right;
+        color:#27aae1;
+      }
+      .axis {
+        fill: none;
+        stroke: #AAA;
+        stroke-width: 1px;
+      }
+      text {
+        stroke: none;
+        fill: #666666;
+        font-size: .6em;
+        font-family:"Helvetica Neue"
+      }
+      .label {
+        fill: #414241;
+      }
+      .node {
+        cursor:pointer;
+      }
+      .dot {
+        opacity: .7;
+        cursor: pointer;
+      }
+      .chart{
+
+margin-right: 50%;
+        position: center;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="scatter-load" class="chart">
+      <h1>Data visualization</h1>
+      <p> Calories vs portion_size data visualization. Here we can see that even if more veg/fruits are eaten, they consume less calories unlike snacks.</p>
+    </div>
+    <app-root></app-root>
+  </body>
+
+
+
+
+
+<script>
+  var food = [{"name":"Celery*","size":2.1,"price":0.16,"calories":10,"food_type":"veggies"}, {"name":"Broccoli florets*","size":1.6,"price":0.18,"calories":12,"food_type":"veggies"}, {"name":"Tomatoes, grape/cherry*","size":3.2,"price":0.55,"calories":16,"food_type":"veggies"}, {"name":"Carrots, baby*","size":2.3,"price":0.19,"calories":22,"food_type":"veggies"}, {"name":"Red peppers*","size":2.6,"price":0.6,"calories":23,"food_type":"veggies"}, {"name":"Strawberries*","size":2.9,"price":0.41,"calories":27,"food_type":"veggies"}, {"name":"Cantaloupe","size":3.5,"price":0.38,"calories":33,"food_type":"veggies"}, {"name":"Plum*","size":2.9,"price":0.25,"calories":38,"food_type":"veggies"}, {"name":"Oranges, navel","size":3.8,"price":0.2,"calories":53,"food_type":"veggies"}, {"name":"Grapes ","size":3,"price":0.32,"calories":59,"food_type":"veggies"}, {"name":"Peaches, canned*","size":4.4,"price":0.31,"calories":68,"food_type":"veggies"}, {"name":"Fruit cocktail, canned*","size":4.4,"price":0.31,"calories":71,"food_type":"veggies"}, {"name":"Tangerines","size":4.8,"price":0.51,"calories":72,"food_type":"veggies"}, {"name":"Watermelon ","size":8.7,"price":0.25,"calories":74,"food_type":"veggies"}, {"name":"Pineapple, canned*","size":4.4,"price":0.26,"calories":75,"food_type":"veggies"}, {"name":"Apples","size":5.2,"price":0.36,"calories":77,"food_type":"veggies"}, {"name":"Sweet potatoes, cooked*","size":3.5,"price":0.33,"calories":90,"food_type":"veggies"}, {"name":"Applesauce, jarred","size":4.6,"price":0.22,"calories":100,"food_type":"veggies"}, {"name":"Bananas","size":4.1,"price":0.18,"calories":102,"food_type":"veggies"}, {"name":"Raisins*","size":1.3,"price":0.19,"calories":109,"food_type":"veggies"}, {"name":"Chocolate  candy ","size":0.9,"price":0.24,"calories":262,"food_type":"snacks"}, {"name":"Cookies ","size":1,"price":0.16,"calories":123,"food_type":"snacks"}, {"name":"Corn chips","size":1,"price":0.21,"calories":140,"food_type":"snacks"}, {"name":"Crackers ","size":0.9,"price":0.16,"calories":114,"food_type":"snacks"}, {"name":"Cupcakes ","size":2,"price":0.34,"calories":174,"food_type":"snacks"}, {"name":"Danish ","size":2.6,"price":0.47,"calories":271,"food_type":"snacks"}, {"name":"Donuts ","size":2.1,"price":0.36,"calories":235,"food_type":"snacks"}, {"name":"Fruit rolls","size":0.8,"price":0.28,"calories":82,"food_type":"snacks"}, {"name":"Graham crackers  ","size":0.9,"price":0.14,"calories":102,"food_type":"snacks"}, {"name":"Granola  bars","size":1.1,"price":0.3,"calories":119,"food_type":"snacks"}, {"name":"Ice cream  ","size":3.8,"price":0.39,"calories":196,"food_type":"snacks"}, {"name":"Muffins","size":3.3,"price":0.83,"calories":369,"food_type":"snacks"}, {"name":"Pizza, from frozen","size":3.3,"price":0.63,"calories":252,"food_type":"snacks"}, {"name":"Popsicles and bars  ","size":1,"price":0.34,"calories":80,"food_type":"snacks"}, {"name":"Potato chips","size":1.1,"price":0.27,"calories":169,"food_type":"snacks"}, {"name":"Pretzels","size":1.5,"price":0.25,"calories":168,"food_type":"snacks"}, {"name":"Pudding, ready-to-eat","size":4.1,"price":0.38,"calories":152,"food_type":"snacks"}, {"name":"Sandwich crackers","size":1.3,"price":0.2,"calories":183,"food_type":"snacks"}, {"name":"Toaster pastries","size":2.7,"price":0.35,"calories":299,"food_type":"snacks"}, {"name":"Tortilla chips","size":1.2,"price":0.21,"calories":161,"food_type":"snacks"}]
+
+
+  showScatterPlot(food);
+  function showScatterPlot(data) {
+    // just to have some space around items.
+    var margins = {
+      "left": 40,
+      "right": 30,
+      "top": 30,
+      "bottom": 30
+    };
+
+    var width = 700;
+    var height = 500;
+
+    // this will be our colour scale. An Ordinal scale.
+    var colors = d3.scale.category10();
+
+    // we add the SVG component to the scatter-load div
+    var svg = d3.select("#scatter-load").append("svg").attr("width", width).attr("height", height).append("g")
+      .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+
+    // this sets the scale that we're using for the X axis.
+    // the domain define the min and max variables to show. In this case, it's the min and max prices of items.
+    // this is made a compact piece of code due to d3.extent which gives back the max and min of the price variable within the dataset
+    var x = d3.scale.linear()
+      .domain(d3.extent(data, function (d) {
+        return d.size;
+      }))
+      // the range maps the domain to values from 0 to the width minus the left and right margins (used to space out the visualization)
+      .range([0, width - margins.left - margins.right]);
+
+    // this does the same as for the y axis but maps from the calories variable to the height to 0.
+    var y = d3.scale.linear()
+      .domain(d3.extent(data, function (d) {
+        return d.calories;
+      }))
+      // Note that height goes first due to the weird SVG coordinate system
+      .range([height - margins.top - margins.bottom, 0]);
+
+    //  adding the axes SVG component.
+    svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + y.range()[0] + ")");
+    svg.append("g").attr("class", "y axis");
+
+    //  X axis label.
+    svg.append("text")
+      .attr("fill", "#414241")
+      .attr("text-anchor", "end")
+      .attr("x", width / 2)
+      .attr("y", height - 35)
+      .text("Portion_size");
+
+    svg.append("text")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("class", "label")
+      .text("Calories");
+
+    // defining x and y axes
+    var xAxis = d3.svg.axis().scale(x).orient("bottom").tickPadding(2);
+    var yAxis = d3.svg.axis().scale(y).orient("left").tickPadding(2);
+
+    // selecting axis
+    svg.selectAll("g.y.axis").call(yAxis);
+    svg.selectAll("g.x.axis").call(xAxis);
+
+    //drawing names
+    var food = svg.selectAll("g.node").data(data, function (d) {
+      return d.name;
+    });
+
+
+    var foodGroup = food.enter().append("g").attr("class", "node")
+    //setting position of items
+      .attr('transform', function (d) {
+        return "translate(" + x(d.size) + "," + y(d.calories) + ")";
+      });
+
+    //  Adding graphic circle!
+    foodGroup.append("circle")
+      .attr("r", 5)
+      .attr("class", "dot")
+      .style("fill", function (d) {
+        // remember the ordinal scales? We use the colors scale to get a colour for our manufacturer. Now each node will be coloured
+        // by who makes the chocolate.
+        return colors(d.food_type);
+      });
+
+    // adding text to circle.
+    foodGroup.append("text")
+      .style("text-anchor", "middle")
+      .attr("dy", -10)
+      .text(function (d) {
+        // this shouldn't be a surprising statement.
+        return d.name;
+      });
+  }
+
+
+</script>
+
+</html>
+
